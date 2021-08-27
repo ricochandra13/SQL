@@ -1,0 +1,79 @@
+# Soal 1 Membuat Database
+
+> mysql -uroot -p
+> create database myshop; 
+
+# Soal 2 Membuat Table di Dalam Database
+
+> use myshop
+> create table users(
+    -> id int primary key auto_increment,
+    -> name varchar(255)
+    -> ,
+    -> email varchar(255),
+    -> password varchar(255)
+    -> );
+> create table categories(
+    -> id int primary key auto_increment,
+    -> name varchar(255)
+    -> );
+> create table items(
+    -> id int primary key auto_increment,
+    -> name varchar(255),
+    -> description varchar(255),
+    -> price int,
+    -> stock int,
+    -> category_id int,
+    -> foreign key(category_id) references categories(id)
+    -> );
+
+# Soal 3 Memasukkan Data pada Table
+
+> INSERT INTO users(name, email, password) VALUES("John Doe", "john@doe.com", "john123");
+> INSERT INTO users(name, email, password) VALUES("Jane Doe", "jane@doe.com", "jenita123");
+> INSERT INTO categories(name) VALUES("gadget"),("cloth"),("men"),("women"),("branded");
+> INSERT INTO items(name, description, price, stock, category_id) VALUES("Sumsang b50", "hape keren dari merek sumsang", 4000000, 100, 1),("Uniklooh", "baju keren dari brand ternama", 500000, 50, 2),("IMHO Watch", "jam tangan anak yang jujur banget", 2000000, 10, 1);
+
+# Soal 4 Mengambil Data dari Database
+
+> SELECT id, name, password FROM users;
++----+----------+-----------+
+| id | name     | password  |
++----+----------+-----------+
+|  1 | John Doe | john123   |
+|  2 | Jane Doe | jenita123 |
++----+----------+-----------+
+2 rows in set (0.000 sec)
+
+> SELECT * FROM items WHERE price > 1000000;
++----+-------------+-----------------------------------+---------+-------+-------------+
+| id | name        | description                       | price   | stock | category_id |
++----+-------------+-----------------------------------+---------+-------+-------------+
+|  1 | Sumsang b50 | hape keren dari merek sumsang     | 4000000 |   100 |           1 |
+|  3 | IMHO Watch  | jam tangan anak yang jujur banget | 2000000 |    10 |           1 |
++----+-------------+-----------------------------------+---------+-------+-------------+
+2 rows in set (0.000 sec)
+
+> SELECT * FROM items WHERE name like 'uniklo%';
++----+----------+-------------------------------+--------+-------+-------------+
+| id | name     | description                   | price  | stock | category_id |
++----+----------+-------------------------------+--------+-------+-------------+
+|  2 | Uniklooh | baju keren dari brand ternama | 500000 |    50 |           2 |
++----+----------+-------------------------------+--------+-------+-------------+
+1 row in set (0.000 sec)
+
+> SELECT items.name, items.description, items.price, items.stock, items.category_id, categories.name as kategori FROM items left join categories on items.category_id = categories.id;
++-------------+-----------------------------------+---------+-------+-------------+----------+
+| name        | description                       | price   | stock | category_id | kategori |
++-------------+-----------------------------------+---------+-------+-------------+----------+
+| Sumsang b50 | hape keren dari merek sumsang     | 4000000 |   100 |           1 | gadget   |
+| Uniklooh    | baju keren dari brand ternama     |  500000 |    50 |           2 | cloth    |
+| IMHO Watch  | jam tangan anak yang jujur banget | 2000000 |    10 |           1 | gadget   |
++-------------+-----------------------------------+---------+-------+-------------+----------+
+3 rows in set (0.000 sec)
+
+# Soal 5 Mengubah Data dari Database
+
+> UPDATE items SET price = 2500000 WHERE name = "sumsang b50";
+Query OK, 1 row affected (0.001 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
